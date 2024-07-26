@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수업 유형 테스트</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+  }
+  .container {
+    width: 50%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .question { display: none; }
+  .question.active { display: block; }
+  .result { display: none; }
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="question-container">
+  <h1>수업 유형 테스트</h1>
+
+  <div class="question active" data-question="1">
+    <p>1. 수업을 준비할 때 가장 중요하게 생각하는 것은 무엇인가요?</p>
+    <label><input type="radio" name="q1" value="a"> 체계적인 강의 자료 준비</label><br>
+    <label><input type="radio" name="q1" value="b"> 학생들의 활발한 참여와 토론</label><br>
+    <label><input type="radio" name="q1" value="c"> 실습 도구와 재료 준비</label><br>
+    <label><input type="radio" name="q1" value="d"> 프로젝트 계획과 팀 구성</label><br>
+    <button onclick="nextQuestion(1)">다음</button>
+  </div>
+
+  <div class="question" data-question="2">
+    <p>2. 수업 중 선호하는 도구는 무엇인가요?</p>
+    <label><input type="radio" name="q2" value="a"> 프레젠테이션 슬라이드와 레이저 포인터</label><br>
+    <label><input type="radio" name="q2" value="b"> 화이트보드와 마커</label><br>
+    <label><input type="radio" name="q2" value="c"> 실습 키트와 장비</label><br>
+    <label><input type="radio" name="q2" value="d"> 프로젝트 계획서와 참고 자료</label><br>
+    <button onclick="nextQuestion(2)">다음</button>
+  </div>
+
+  <div class="question" data-question="3">
+    <p>3. 수업 중 학생들의 반응을 보며 가장 기쁜 순간은 언제인가요?</p>
+    <label><input type="radio" name="q3" value="a"> 학생들이 집중해서 듣고 필기할 때</label><br>
+    <label><input type="radio" name="q3" value="b"> 학생들이 활발히 토론하고 의견을 나눌 때</label><br>
+    <label><input type="radio" name="q3" value="c"> 학생들이 실습을 성공적으로 완료할 때</label><br>
+    <label><input type="radio" name="q3" value="d"> 학생들이 프로젝트를 완성하고 발표할 때</label><br>
+    <button onclick="nextQuestion(3)">다음</button>
+  </div>
+
+  <div class="question" data-question="4">
+    <p>4. 문제 상황이 발생했을 때, 어떻게 대처하나요?</p>
+    <label><input type="radio" name="q4" value="a"> 문제의 원인을 분석하고 해결책을 강의</label><br>
+    <label><input type="radio" name="q4" value="b"> 학생들과 함께 논의하여 해결책을 모색</label><br>
+    <label><input type="radio" name="q4" value="c"> 실습을 통해 문제를 해결하고 피드백</label><br>
+    <label><input type="radio" name="q4" value="d"> 팀별로 문제를 나누어 해결하고 결과를 공유</label><br>
+    <button onclick="nextQuestion(4)">다음</button>
+  </div>
+
+  <div class="question" data-question="5">
+    <p>5. 가장 좋아하는 교육 방식은 무엇인가요?</p>
+    <label><input type="radio" name="q5" value="a"> 주입식 교육</label><br>
+    <label><input type="radio" name="q5" value="b"> 학생 주도형 토론</label><br>
+    <label><input type="radio" name="q5" value="c"> 실습 중심 교육</label><br>
+    <label><input type="radio" name="q5" value="d"> 프로젝트 기반 학습</label><br>
+    <button onclick="showResult()">결과 확인</button>
+  </div>
+</div>
+
+<div class="container result" id="result-container">
+  <h2>결과</h2>
+  <p id="result-text"></p>
+</div>
+
+<script>
+  function nextQuestion(currentQuestion) {
+    const selectedOption = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+    if (!selectedOption) {
+      alert("응답을 선택해주세요!");
+      return;
+    }
+
+    const current = document.querySelector(`.question[data-question="${currentQuestion}"]`);
+    const next = document.querySelector(`.question[data-question="${currentQuestion + 1}"]`);
+
+    if (next) {
+      current.classList.remove("active");
+      next.classList.add("active");
+    }
+  }
+
+  function showResult() {
+    const selectedOption = document.querySelector(`input[name="q5"]:checked`);
+    if (!selectedOption) {
+      alert("응답을 선택해주세요!");
+      return;
+    }
+
+    const answers = Array.from(document.querySelectorAll("input[type='radio']:checked")).map(input => input.value);
+    const counts = { a: 0, b: 0, c: 0, d: 0 };
+
+    answers.forEach(answer => {
+      counts[answer]++;
+    });
+
+    let result;
+    if (counts.a >= counts.b && counts.a >= counts.c && counts.a >= counts.d) {
+      result = `
+      <strong>강의식 수업 유형</strong><br>
+      <strong>특징:</strong> 체계적인 자료 준비와 설명을 중요시하며, 많은 정보를 효율적으로 전달해요.<br>
+      <strong>나는 어떤 교사일까요?:</strong> 교탁 앞에서 프레젠테이션을 활용하여 강의해요. 학생들의 이해를 돕기 위해 질문을 유도하고 답변해요.
+      `;
+    } else if (counts.b >= counts.a && counts.b >= counts.c && counts.b >= counts.d) {
+      result = `
+      <strong>토론식 수업 유형</strong><br>
+      <strong>특징:</strong> 학생들 간의 상호작용을 통해 비판적 사고와 의사소통 능력을 배양해요.<br>
+      <strong>나는 어떤 교사일까요?:</strong> 교실 중앙에서 토론을 주도해요. 학생들의 발언을 조율하고 적극적으로 경청해요.
+      `;
+    } else if (counts.c >= counts.a && counts.c >= counts.b && counts.c >= counts.d) {
+      result = `
+      <strong>실습식 수업 유형</strong><br>
+      <strong>특징:</strong> 실습과 경험을 통해 실질적인 기술과 능력을 배양해요.<br>
+      <strong>나는 어떤 교사일까요?:</strong> 실습 도구와 재료를 준비하고 시연해요. 학생들에게 개별적인 도움을 제공해요.
+      `;
+    } else {
+      result = `
+      <strong>프로젝트 기반 수업 유형</strong><br>
+      <strong>특징:</strong> 장기적인 프로젝트를 통해 자기주도적 학습과 협업 능력을 배양해요.<br>
+      <strong>나는 어떤 교사일까요?:</strong> 프로젝트 주제를 제시하고 팀별 진행 상황을 모니터링해요. 필요한 자원과 정보를 제공해요.
+      `;
+    }
+
+    document.getElementById("question-container").style.display = "none";
+    document.getElementById("result-text").innerHTML = result;
+    document.getElementById("result-container").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
